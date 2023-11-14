@@ -1,25 +1,67 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import ProductList from "./components/ProductList";
+import ProductForm from "./components/ProductForm";
 
-function App() {
+const App = () => {
+  const [products, setProducts] = useState([]);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const fetchData = async () => {
+    const { data } = await axios.get("http://localhost:3004/products");
+    setProducts(data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const deleteProduct = async ({ id }) => {
+    try {
+      await axios.delete(`http://localhost:3004/products/${id}`);
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addProduct = async (product) => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3004/products",
+        product
+      );
+      setProducts([...products, data]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateProduct = async (product) => {
+    try {
+      const { data } = await axios.put(
+        `http://localhost:3004/products/${product.id}`,
+        product
+      );
+      if (data) {
+        setSelectedProduct(null);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1>Admin page</h1>
+      <ProductList
+        products={products}
+        onSelect={(product) => setSelectedProduct(product)}
+        onDelete={deleteProduct}
+      />
+      <ProductForm
+        product={selectedProduct}
+        onSave={selectedProduct ? updateProduct : addProduct}
+      />
+    </>
   );
-}
-
+};
 export default App;
