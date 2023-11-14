@@ -18,25 +18,15 @@
   },
   "products": [
     {
-      "id": "2",
-      "name": "san pham 1",
-      "price": 200
-    },
-    {
       "id": "sdsd",
-      "name": "san pham 1",
+      "name": "san pham 1 update",
       "price": 200
     },
     {
-      "id": "wewew",
-      "name": "san pham",
-      "price": "200222"
-    },
-    {
-      "name": "dsds",
-      "price": "232323",
+      "name": "san pham iphone 15",
+      "price": "300",
       "desc": "",
-      "id": "M4j0WX-"
+      "id": "JekOIlk"
     }
   ]
 }
