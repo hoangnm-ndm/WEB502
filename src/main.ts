@@ -32,3 +32,42 @@ enum ROLE {
 }
 
 console.log(ROLE.MANAGER);
+
+interface IProduct {
+  name: string;
+  price: number;
+  desc: string;
+  checkStatus?: void;
+}
+
+const product: IProduct = {
+  name: "Iphone 15 pro max",
+  price: 200,
+  desc: "Mo ta san pham",
+};
+
+const products: Array<IProduct> = [
+  {
+    name: "Iphone 15 pro max",
+    price: 200,
+    desc: "Mo ta san pham",
+  },
+  {
+    name: "Iphone 16 pro max",
+    price: 400,
+    desc: "Mo ta san pham",
+  },
+];
+
+const products1: IProduct[] = [
+  {
+    name: "Iphone 15 pro max",
+    price: 200,
+    desc: "Mo ta san pham",
+  },
+  {
+    name: "Iphone 16 pro max",
+    price: 400,
+    desc: "Mo ta san pham",
+  },
+];

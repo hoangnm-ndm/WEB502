@@ -26,3 +26,32 @@ var ROLE;
     ROLE[ROLE["MANAGER"] = 1] = "MANAGER";
 })(ROLE || (ROLE = {}));
 console.log(ROLE.MANAGER);
+const product = {
+    name: "Iphone 15 pro max",
+    price: 200,
+    desc: "Mo ta san pham",
+};
+const products = [
+    {
+        name: "Iphone 15 pro max",
+        price: 200,
+        desc: "Mo ta san pham",
+    },
+    {
+        name: "Iphone 16 pro max",
+        price: 400,
+        desc: "Mo ta san pham",
+    },
+];
+const products1 = [
+    {
+        name: "Iphone 15 pro max",
+        price: 200,
+        desc: "Mo ta san pham",
+    },
+    {
+        name: "Iphone 16 pro max",
+        price: 400,
+        desc: "Mo ta san pham",
+    },
+];
