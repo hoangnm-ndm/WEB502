@@ -1,54 +1,64 @@
-import React, { useEffect } from "react";
+// ProductForm.js
+import React from "react";
+import { Modal, Form, Button } from "react-bootstrap";
 
-const ProductForm = ({ product, onSave }) => {
-  const initProduct = {
-    name: "",
-    price: "",
-    desc: "",
-  };
-  const [formData, setFormData] = React.useState(initProduct);
-
-  useEffect(() => {
-    if (product) {
-      setFormData(product);
-    } else {
-      setFormData(initProduct);
-    }
-  }, [product]);
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSave = (e) => {
-    onSave({ ...product, ...formData });
-    setFormData(initProduct);
-  };
-
+const ProductForm = ({
+  showModal,
+  handleCloseModal,
+  formValues,
+  handleFormChange,
+  handleFormSubmit,
+}) => {
   return (
-    <>
-      <h2>Product Form</h2>
-      <form>
-        <label>Name: </label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-        ></input>
-        <label>Name: </label>
-        <input
-          type="number"
-          name="price"
-          value={formData.price}
-          onChange={handleInputChange}
-        ></input>
-        <button type="submit" onClick={handleSave}>
-          {product ? "Update" : "Save"}
-        </button>
-      </form>
-    </>
+    <Modal show={showModal} onHide={handleCloseModal}>
+      <Modal.Title>
+        {formValues.id ? "Edit Product" : "Add Product"}
+      </Modal.Title>
+
+      <Modal.Body>
+        <Form>
+          <Form.Group controlId="formName">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter product name"
+              name="name"
+              value={formValues.name}
+              onChange={handleFormChange}
+            />
+          </Form.Group>
+          <Form.Group controlId="formPrice">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Enter product price"
+              name="price"
+              value={formValues.price}
+              onChange={handleFormChange}
+            />
+          </Form.Group>
+          <Form.Group controlId="formDesc">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Enter product description"
+              name="desc"
+              value={formValues.desc}
+              onChange={handleFormChange}
+            />
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleCloseModal}>
+          Close
+        </Button>
+        <Button variant="primary" onClick={handleFormSubmit}>
+          {formValues.id ? "Update" : "Add"}
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
