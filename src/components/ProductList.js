@@ -13,12 +13,6 @@ const ProductList = () => {
     price: "",
     desc: "",
   });
-
-  if (!formValues.name || !formValues.price || !formValues.desc) {
-    alert("Vui lòng nhập đầy đủ thông tin sản phẩm.");
-    return;
-  }
-
   useEffect(() => {
     api.getProducts().then((data) => setProducts(data));
   }, []);
