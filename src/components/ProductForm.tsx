@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 type ProductFormProps = {
-  onClose: () => void; // Hàm đóng form
-  onSubmit: (product: Product) => void; // Hàm gửi dữ liệu sản phẩm lên server
-  initialProduct?: Product | null; // Sản phẩm ban đầu khi chỉnh sửa
+  onClose: () => void;
+  onSubmit: (product: Product) => void;
+  initialProduct?: Product | null;
 };
 
 type Product = {
