@@ -2,33 +2,65 @@ import { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import axios from "axios";
 import ProductForm from "./ProductForm";
+import { Product } from "../interfaces/Product";
 const api = "http://localhost:8000/api/products";
 
 const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
-
   const [isOpenForm, setIsOpenForm] = useState<boolean>(false);
-
-  type Product = {
-    name: string;
-    price: number;
-    desc: string;
-    _id?: string;
-  };
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     axios
       .get(api)
-      .then((res) => {
-        setProducts(res.data.data);
+      .then(({ data }) => {
+        console.log(data.data);
+        setProducts(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  const showForm = () => {
+  const openForm = (product: Product | null = null) => {
     setIsOpenForm(!isOpenForm);
+    setSelectedProduct(product);
+  };
+
+  const closeFom = () => {
+    setIsOpenForm(false);
+    setSelectedProduct(null);
+  };
+
+  const updateProduct = (product: Product) => {
+    console.log(product);
+  };
+
+  const deleteProduct = (id: string) => {
+    console.log(id);
+  };
+
+  const addProduct = (product: Product) => {
+    axios
+      .post(api, product)
+      .then(({ data }) => {
+        console.log(data);
+        setProducts((prevs) => [...prevs, data.data]);
+        alert(data.message);
+      })
+      .catch(({ response }) => {
+        console.log(response.data);
+        alert(response.data.message);
+      });
+  };
+
+  const handleSubmit = (product: Product) => {
+    if (selectedProduct) {
+      updateProduct(product);
+    } else {
+      addProduct(product);
+    }
+    closeFom();
   };
 
   return (
@@ -37,10 +69,16 @@ const ProductList = () => {
         <div className="row">
           <div className="col-12">
             <h2> Product Form</h2>
-            <Button onClick={() => showForm()}>
+            <Button onClick={() => openForm()}>
               {isOpenForm ? "Đóng" : "Mở form"}
             </Button>
-            {isOpenForm && <ProductForm />}
+            {isOpenForm && (
+              <ProductForm
+                onSubmit={handleSubmit}
+                closeForm={closeFom}
+                initProduct={selectedProduct}
+              />
+            )}
           </div>
           <div className="col-12">
             <h2>Product List</h2>
@@ -63,8 +101,15 @@ const ProductList = () => {
                       <td>{product.price}</td>
                       <td>{product.desc || "Đang cập nhật"}</td>
                       <td>
-                        <Button className="btn btn-warning">Edit</Button>
-                        <Button className="btn btn-danger">Delete</Button>
+                        <Button className="btn btn-warning">Edit</Button>{" "}
+                        <Button
+                          className="btn btn-danger"
+                          onClick={() =>
+                            product._id && deleteProduct(product._id)
+                          }
+                        >
+                          Delete
+                        </Button>
                       </td>
                     </tr>
                   ))}
