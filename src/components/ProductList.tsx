@@ -14,7 +14,6 @@ const ProductList = () => {
     axios
       .get(api)
       .then(({ data }) => {
-        console.log(data.data);
         setProducts(data.data);
       })
       .catch((err) => {
@@ -23,7 +22,7 @@ const ProductList = () => {
   }, []);
 
   const openForm = (product: Product | null = null) => {
-    setIsOpenForm(!isOpenForm);
+    setIsOpenForm(true);
     setSelectedProduct(product);
   };
 
@@ -33,11 +32,31 @@ const ProductList = () => {
   };
 
   const updateProduct = (product: Product) => {
-    console.log(product);
+    setSelectedProduct(product);
+    openForm(product);
   };
 
   const deleteProduct = (id: string) => {
-    console.log(id);
+    axios
+      .delete(`${api}/${id}`) //locahost:8000/api/products/undefined
+      .then(({ data }) => {
+        // Cach 1: set lai state products
+        const newProducts = products.filter((product) => product._id !== id);
+        setProducts(newProducts);
+        // Cach 2: fetch lai data tu server
+        // axios
+        //   .get(api)
+        //   .then(({ data }) => {
+        //     setProducts(data.data);
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
+        alert(data.message);
+      })
+      .catch(({ data }) => {
+        console.log(data);
+      });
   };
 
   const addProduct = (product: Product) => {
@@ -101,7 +120,12 @@ const ProductList = () => {
                       <td>{product.price}</td>
                       <td>{product.desc || "Đang cập nhật"}</td>
                       <td>
-                        <Button className="btn btn-warning">Edit</Button>{" "}
+                        <Button
+                          onClick={() => updateProduct(product)}
+                          className="btn btn-warning"
+                        >
+                          Edit
+                        </Button>{" "}
                         <Button
                           className="btn btn-danger"
                           onClick={() =>
