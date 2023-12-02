@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button, Table, Toast } from "react-bootstrap";
 import axios from "axios";
 import ProductForm from "./ProductForm";
 import { Product } from "../interfaces/Product";
@@ -16,8 +16,8 @@ const ProductList = () => {
       .then(({ data }) => {
         setProducts(data.data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(({ data }) => {
+        alert(data.message);
       });
   }, []);
 
@@ -32,8 +32,27 @@ const ProductList = () => {
   };
 
   const updateProduct = (product: Product) => {
-    setSelectedProduct(product);
     openForm(product);
+    console.log(product);
+    setSelectedProduct((prevs) => ({ ...prevs, ...product }));
+    //
+    axios
+      .put(`${api}/${product._id}`, {
+        name: product.name,
+        price: product.price,
+        desc: product.desc,
+      })
+      .then(({ data }) => {
+        const newProducts = products.map((p) =>
+          p._id === product._id ? product : p
+        );
+        setProducts(newProducts);
+        alert(data.message);
+      })
+      .catch((res) => {
+        console.log(res);
+        // alert(data.message);
+      });
   };
 
   const deleteProduct = (id: string) => {
