@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Table, Toast } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import axios from "axios";
 import ProductForm from "./ProductForm";
 import { Product } from "../interfaces/Product";
@@ -57,20 +57,10 @@ const ProductList = () => {
 
   const deleteProduct = (id: string) => {
     axios
-      .delete(`${api}/${id}`) //locahost:8000/api/products/undefined
+      .delete(`${api}/${id}`)
       .then(({ data }) => {
-        // Cach 1: set lai state products
         const newProducts = products.filter((product) => product._id !== id);
         setProducts(newProducts);
-        // Cach 2: fetch lai data tu server
-        // axios
-        //   .get(api)
-        //   .then(({ data }) => {
-        //     setProducts(data.data);
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
         alert(data.message);
       })
       .catch(({ data }) => {
